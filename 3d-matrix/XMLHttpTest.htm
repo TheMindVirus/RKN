@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>OBJ test</title>
+<script type="text/Javascript">
+H=0;
+I=0;
+J=0;
+K=0;
+filename="";
+xmlDoc="";
+str1="";
+str="";
+xmlhttp=new XMLHttpRequest();
+xmlhttp.onreadystatechange=function()
+{
+H=xmlhttp.readyState;
+if(xmlhttp.readyState==4)
+{
+I=xmlhttp.status;
+if(xmlhttp.status==200)
+{
+xmlDoc=xmlhttp.responseText;
+J=xmlDoc.indexOf("<pre");
+K=xmlDoc.indexOf("</pre>");
+str=String(xmlDoc.substring(xmlDoc.indexOf("<pre"),xmlDoc.indexOf("</pre>")));
+document.getElementById("output").innerHTML=str;
+}
+}
+}
+
+function oncreate()
+{
+Tick();
+}
+
+function Tick()
+{
+document.getElementById("processing").innerHTML='<p>Ready:'+H+'</p><p>Status:'+I+'</p><p>pre:'+J+'</p><p>/pre:'+K+'</p>';
+
+setTimeout("Tick()",0);
+}
+
+function parseOBJ()
+{
+filename=document.getElementById("edit1").value;
+xmlhttp.open("GET",filename,true);
+xmlhttp.send();
+//check for errors
+if(str==null){return null;}
+else
+{
+//split file into v and f
+vindex1=str.indexOf("v");
+vindex2=str.lastIndexOf("v");
+findex1=str.indexOf("f");
+findex2=str.lastIndexOf("f");
+}
+}
+</script>
+</head>
+<body onload="oncreate();">
+<div id="processing" style="background-color:#00FFFF; height:content; width:content;"></div>
+<input type="text" id="edit1">
+<input type="button" value="open" onclick="parseOBJ();">
+<div id="output" style="background-color:#00FFFF; height:content; width:content;"></div>
+</body>
+</html>

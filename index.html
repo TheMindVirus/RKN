@@ -1,0 +1,12 @@
+<title>Hashtag EdgeRunner</title>
+<script>
+window.onload = function()
+{
+    var tag = ("" + window.location).toLowerCase().split("#")[1];
+         if (tag == "SiliCon2022".toLowerCase()) { window.location = "https://twitter.com/hashtag/SiliCon2022"; }
+    else if (tag == "CantEvenBackOrderIt".toLowerCase()) { window.location = "https://www.adafruit.com/"; }
+    else if (tag == "ARRR!!!".toLowerCase()) { window.location = "https://shop.pimoroni.com/"; }
+    else { window.location = "/webgl"; }
+}
+</script>
+<body style="background: black;"></body>

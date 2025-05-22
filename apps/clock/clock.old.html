@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>Clock</title>
+<script type="text/Javascript">
+d=new Date();
+c=["#000000","#FF9911","#0099FF"];
+c[1]="#00FF00";
+c[2]=c[0];
+pi=Math.PI;
+h=0;
+hc=pi/12;
+m=0;
+mc=pi/60;
+s=0;
+sc=pi/60;
+ms=0;
+msc=pi/40;
+Height=0;
+Width=0;
+X=0;
+Y=0;
+size=0;
+
+function onCreate()
+{
+Resize();
+setVars();
+Draw();
+}
+
+function Resize()
+{
+Height=window.innerHeight;
+Width=window.innerWidth;
+X=Width/2;
+Y=Height/2;
+document.getElementById("mycanvas").height=Height;
+document.getElementById("mycanvas").width=Width;
+if(Height<Width){size=Height/500;}
+else{size=Width;}
+}
+
+function setVars()
+{
+d=new Date();
+h=((d.getHours()/6)-0.5)*pi;
+m=((d.getMinutes()/30)-0.5)*pi;
+s=((d.getSeconds()/30)-0.5)*pi;
+ms=((d.getMilliseconds()/500)-0.5)*pi;
+setTimeout("setVars()",0);
+}
+
+function Draw()
+{
+//CLEAR
+document.getElementById("mycanvas").width=document.getElementById("mycanvas").width;
+//BACKGROUND
+document.getElementById("mycanvas").getContext("2d").fillStyle=c[0];
+document.getElementById("mycanvas").getContext("2d").fillRect(0,0,Width,Height);
+document.getElementById("mycanvas").getContext("2d").beginPath();
+document.getElementById("mycanvas").getContext("2d").arc(X,Y,200*size,0,pi*2,false);
+document.getElementById("mycanvas").getContext("2d").lineWidth=15*size;
+document.getElementById("mycanvas").getContext("2d").strokeStyle=c[1];
+document.getElementById("mycanvas").getContext("2d").closePath();
+document.getElementById("mycanvas").getContext("2d").stroke();
+document.getElementById("mycanvas").getContext("2d").beginPath();
+document.getElementById("mycanvas").getContext("2d").arc(X,Y,160*size,0,pi*2,false);
+document.getElementById("mycanvas").getContext("2d").lineWidth=30*size;
+document.getElementById("mycanvas").getContext("2d").strokeStyle=c[1];
+document.getElementById("mycanvas").getContext("2d").closePath();
+document.getElementById("mycanvas").getContext("2d").stroke();
+document.getElementById("mycanvas").getContext("2d").beginPath();
+document.getElementById("mycanvas").getContext("2d").arc(X,Y,100*size,0,pi*2,false);
+document.getElementById("mycanvas").getContext("2d").lineWidth=20*size;
+document.getElementById("mycanvas").getContext("2d").strokeStyle=c[1];
+document.getElementById("mycanvas").getContext("2d").closePath();
+document.getElementById("mycanvas").getContext("2d").stroke();
+document.getElementById("mycanvas").getContext("2d").beginPath();
+document.getElementById("mycanvas").getContext("2d").arc(X,Y,55*size,0,pi*2,false);
+document.getElementById("mycanvas").getContext("2d").lineWidth=25*size;
+document.getElementById("mycanvas").getContext("2d").strokeStyle=c[1];
+document.getElementById("mycanvas").getContext("2d").closePath();
+document.getElementById("mycanvas").getContext("2d").stroke();
+//HOUR HAND
+document.getElementById("mycanvas").getContext("2d").beginPath();
+document.getElementById("mycanvas").getContext("2d").arc(X,Y,200*size,h-hc,h+hc,false);
+document.getElementById("mycanvas").getContext("2d").arc(X,Y,200*size,h+hc,h-hc,true);
+document.getElementById("mycanvas").getContext("2d").lineWidth=15*size+3;
+document.getElementById("mycanvas").getContext("2d").strokeStyle=c[2];
+document.getElementById("mycanvas").getContext("2d").closePath();
+document.getElementById("mycanvas").getContext("2d").stroke();
+//MINUTE HAND
+document.getElementById("mycanvas").getContext("2d").beginPath();
+document.getElementById("mycanvas").getContext("2d").arc(X,Y,160*size,m-mc,m+mc,false);
+document.getElementById("mycanvas").getContext("2d").arc(X,Y,160*size,m+mc,m-mc,true);
+document.getElementById("mycanvas").getContext("2d").lineWidth=30*size+3;
+document.getElementById("mycanvas").getContext("2d").strokeStyle=c[2];
+document.getElementById("mycanvas").getContext("2d").closePath();
+document.getElementById("mycanvas").getContext("2d").stroke();
+//SECOND HAND
+document.getElementById("mycanvas").getContext("2d").beginPath();
+document.getElementById("mycanvas").getContext("2d").arc(X,Y,100*size,s-sc,s+sc,false);
+document.getElementById("mycanvas").getContext("2d").arc(X,Y,100*size,s+sc,s-sc,true);
+document.getElementById("mycanvas").getContext("2d").lineWidth=20*size+3;
+document.getElementById("mycanvas").getContext("2d").strokeStyle=c[2];
+document.getElementById("mycanvas").getContext("2d").closePath();
+document.getElementById("mycanvas").getContext("2d").stroke();
+//MILLISECOND HAND
+document.getElementById("mycanvas").getContext("2d").beginPath();
+document.getElementById("mycanvas").getContext("2d").arc(X,Y,55*size,ms-msc,ms+msc,false);
+document.getElementById("mycanvas").getContext("2d").arc(X,Y,55*size,ms+msc,ms-msc,true);
+document.getElementById("mycanvas").getContext("2d").lineWidth=25*size+3;
+document.getElementById("mycanvas").getContext("2d").strokeStyle=c[2];
+document.getElementById("mycanvas").getContext("2d").closePath();
+document.getElementById("mycanvas").getContext("2d").stroke();
+setTimeout("Draw()",0);
+}
+</script>
+</head>
+<body onload="onCreate();" onresize="Resize();" style="background-color:#000000;">
+<canvas id="mycanvas" width="500" height="500" style="position:absolute; top:0px; left:0px;"></canvas>
+</body>
+</html>

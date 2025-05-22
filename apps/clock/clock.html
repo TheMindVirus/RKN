@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html manifest="./clock.manifest">
+    <head>
+        <title>Clock</title>
+        <meta name="viewport" content="width=device-width"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+        <link rel="apple-touch-icon" href="./clock.png">
+        <style>
+            body, #canvas { background-color: #000000; overflow: hidden; touch-action: none; }
+            #canvas { position: absolute; top: 0; left: 0; }
+        </style>
+        <script>
+            window.onload = function()
+            {
+                alert("hello");
+                var cache = window.applicationCache();
+                cache.oncached = function(event) { console.log("[MANIFEST]: cached"); }
+                cache.onchecking =  function(event) { console.log("[MANIFEST]: checking"); }
+                cache.ondownloading = function(event) { console.log("[MANIFEST]: downloading"); }
+                cache.onerror = function(event) { console.log("[MANIFEST]: error"); }
+                cache.onnoupdate = function(event) { console.log("[MANIFEST]: no update"); }
+                cache.onobsolete = function(event) { console.log("[MANIFEST]: obsolete"); }
+                cache.onprogress = function(event) { console.log("[MANIFEST]: progress"); }
+                cache.onupdateready = function(event) { console.log("[MANIFEST]: update ready"); cache.swapCache(); }
+                cache.update();
+            }
+        </script>
+        <script>
+            pi = Math.PI;
+            tau = 2 * pi;
+            now = new Date();
+            canvas = null;
+            ctx = null;
+
+            X = 0;
+            Y = 0;
+            Width = 0;
+            Height = 0;
+            Size = 0;
+            Overlap = 3;
+
+            h = 0;
+            hc = pi / 12;
+            hsz = 200;
+            hth = 15;
+
+            m = 0;
+            mc = pi / 60;
+            msz = 160;
+            mth = 30;
+
+            s = 0;
+            sc = pi / 60;
+            ssz = 100;
+            sth = 20;
+
+            ms = 0;
+            msc = pi / 40;
+            mssz = 55;
+            msth = 25;
+
+            colourPrimary = "#0099FF";
+            colourSecondary = "#000000";
+            colourBackground = "#000000";
+
+            window.onload = function()
+            {
+                canvas = document.getElementById("canvas");
+                ctx = canvas.getContext("2d");
+                Resize();
+                Update();
+                Render();
+            }
+
+            document.onmousewheel = function(event) { event.preventDefault(); }
+            window.onresize = function() { Resize(); }
+
+            function Resize()
+            {
+                Width = window.innerWidth;
+                Height = window.innerHeight;
+                X = Width / 2;
+                Y = Height / 2;
+                if (Height < Width) { Size = Height / 500; }
+                else { Size = Width / 500; }
+                canvas.width = Width;
+                canvas.height = Height;
+            }
+
+            function Update()
+            {
+                now = new Date();
+                h = ((now.getHours() / 6) - 0.5) * pi;
+                m = ((now.getMinutes() / 30) - 0.5) * pi;
+                s = ((now.getSeconds() / 30) - 0.5) * pi;
+                ms = ((now.getMilliseconds() / 500) - 0.5) * pi;
+                setTimeout("Update()", 0);
+            }
+
+            function Render()
+            {
+                //CLEAR
+                canvas.width = canvas.width;
+                canvas.height = canvas.height;
+
+                //BACKGROUND
+                ctx.fillStyle = colourBackground;
+                ctx.fillRect(0, 0, Width, Height);
+
+                //HOUR FACE
+                ctx.strokeStyle = colourPrimary;
+                ctx.lineWidth = hth * Size;
+                ctx.beginPath();
+                ctx.arc(X, Y, hsz * Size, 0, tau, false);
+                ctx.closePath();
+                ctx.stroke();
+
+                //HOUR HAND
+                ctx.strokeStyle = colourSecondary;
+                ctx.lineWidth = hth * Size + Overlap;
+                ctx.beginPath();
+                ctx.arc(X, Y, hsz * Size, h - hc, h + hc, false);
+                ctx.stroke();
+
+                //MINUTE FACE
+                ctx.lineWidth = mth * Size;
+                ctx.strokeStyle = colourPrimary;
+                ctx.beginPath();
+                ctx.arc(X, Y, msz * Size, 0, tau, false);
+                ctx.stroke();
+
+                //MINUTE HAND
+                ctx.strokeStyle = colourSecondary;
+                ctx.lineWidth = mth * Size + Overlap;
+                ctx.beginPath();
+                ctx.arc(X, Y, msz * Size, m - mc, m + mc, false);
+                ctx.stroke();
+
+                //SECOND FACE
+                ctx.strokeStyle = colourPrimary;
+                ctx.lineWidth = sth * Size;
+                ctx.beginPath();
+                ctx.arc(X, Y, ssz * Size, 0, tau, false);
+                ctx.stroke();
+
+                //SECOND HAND
+                ctx.strokeStyle = colourSecondary;
+                ctx.lineWidth = sth * Size + Overlap;
+                ctx.beginPath();
+                ctx.arc(X, Y, ssz * Size, s - sc, s + sc, false);
+                ctx.stroke();
+
+                //MILLISECOND FACE
+                ctx.strokeStyle = colourPrimary;
+                ctx.lineWidth = mth * Size;
+                ctx.beginPath();
+                ctx.arc(X, Y, mssz * Size, 0, tau, false);
+                ctx.stroke();
+
+                //MILLISECOND HAND
+                ctx.strokeStyle = colourSecondary;
+                ctx.lineWidth = mth * Size + Overlap;
+                ctx.beginPath();
+                ctx.arc(X, Y, mssz * Size, ms - msc, ms + msc, false);
+                ctx.stroke();
+
+                setTimeout("Render()", 0);
+            }
+        </script>
+    </head>
+    <body>
+        <canvas id="canvas"></canvas>
+    </body>
+</html>

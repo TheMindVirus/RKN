@@ -1,0 +1,13 @@
+<title>AtHashTag EdgeRunner</title>
+<script>
+window.onload = function()
+{
+    var hash = ("" + window.location).split("@")[1];
+    var tag = ("" + hash.toLowerCase()).split("#")[1];
+    document.body.innerHTML = hash + " | " + tag;
+    if (tag == "SiliCon2022".toLowerCase()) { window.location = "https://twitter.com/hashtag/SiliCon2022"; }
+    if (tag == "CantEvenBackOrderIt".toLowerCase()) { window.location = "https://www.adafruit.com/"; }
+    if (tag == "ARRR!!!".toLowerCase()) { window.location = "https://shop.pimoroni.com/"; }
+}
+</script>
+<body style="background: black;"></body>

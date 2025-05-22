@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>3d</title>
+<script type="text/Javascript">
+RX=new Array(0,0,0,0);
+RY=new Array(0,0,0,0);
+RZ=new Array(0,0,0,0);
+rmx1=new Array(0,0,0,0,0,0,0,0,0,0,0,0);
+rmy1=new Array(0,0,0,0,0,0,0,0,0,0,0,0);
+rmx2=new Array(0,0,0,0,0,0,0,0,0,0,0,0);
+rmy2=new Array(0,0,0,0,0,0,0,0,0,0,0,0);
+VX1=new Array(-150,150,150,-150,-150,150,150,-150,-150,150,150,-150);
+VY1=new Array(150,150,150,150,150,150,150,150,-150,-150,-150,-150);
+VZ1=new Array(150,150,-150,-150,150,150,-150,-150,150,150,-150,-150);
+VX2=new Array(150,150,-150,-150,-150,150,150,-150,150,150,-150,-150);
+VY2=new Array(150,150,150,150,-150,-150,-150,-150,-150,-150,-150,-150);
+VZ2=new Array(150,-150,-150,150,150,150,-150,-150,150,-150,-150,150);
+
+Theta=0;
+MouseX=0;
+MouseY=0;
+function onCreate()
+{
+//addLine(-150,150,150,150,150,150);
+//addLine(150,150,150,150,150,-150);
+//addLine(150,150,-150,-150,150,-150);
+//addLine(-150,150,-150,-150,150,150);
+
+//addLine(-150,150,150,-150,-150,150);
+//addLine(150,150,150,150,-150,150);
+//addLine(150,150,-150,150,-150,-150);
+//addLine(-150,150,-150,-150,-150,-150);
+
+//addLine(-150,-150,150,150,-150,150);
+//addLine(150,-150,150,150,-150,-150);
+//addLine(150,-150,-150,-150,-150,-150);
+//addLine(-150,-150,-150,-150,-150,150);
+Draw();
+RMatrixCalculate();
+}
+
+function addLine(x1,y1,z1,x2,y2,z2)
+{
+VX1.push(x1);
+VY1.push(y1);
+VZ1.push(z1);
+VX2.push(x2);
+VY2.push(y2);
+VZ2.push(z2);
+}
+
+function Draw()
+{
+document.getElementById("mycanvas").getContext("2d").fillStyle="#000000";
+document.getElementById("mycanvas").getContext("2d").fillRect(0,0,700,700);
+document.getElementById("mycanvas").getContext("2d").strokeStyle="#00FF00";
+DrawLine();
+document.getElementById("mycanvas").getContext("2d").stroke();
+document.getElementById("mycanvas").getContext("2d").fillStyle="#00FFFF";
+document.getElementById("mycanvas").getContext("2d").fill();
+//document.title='X:'+MouseX+' Y:'+MouseY;
+setTimeout("Draw()",0);
+}
+
+function DrawLine()
+{
+document.getElementById("mycanvas").getContext("2d").beginPath();
+
+//document.getElementById("mycanvas").getContext("2d").moveTo(RMatrix(VX1[0],VY1[0],VZ1[0],'x'),RMatrix(VX1[0],VY1[0],VZ1[0],'y'));
+//document.getElementById("mycanvas").getContext("2d").lineTo(RMatrix(VX2[0],VY2[0],VZ2[0],'x'),RMatrix(VX2[0],VY2[0],VZ2[0],'y'));
+
+//document.getElementById("mycanvas").getContext("2d").moveTo(RMatrix(VX1[0],VY1[0],VZ1[0],'x'),RMatrix(VX1[0],VY1[0],VZ1[0],'y'));
+//document.getElementById("mycanvas").getContext("2d").lineTo(RMatrix(VX2[0],VY2[0],VZ2[0],'x'),RMatrix(VX2[0],VY2[0],VZ2[0],'y'));
+
+document.getElementById("mycanvas").getContext("2d").moveTo(rmx1[0],rmy1[0]);
+document.getElementById("mycanvas").getContext("2d").lineTo(rmx2[0],rmy2[0]);
+document.title=rmx1[0]+', '+rmy1[2]+', '+rmx2[2]+', '+rmy2[2];
+//document.title=rmx2[0];
+
+for(i=0;i<12;i++)
+{
+document.getElementById("mycanvas").getContext("2d").moveTo(rmx1[i],rmy1[i]);
+document.getElementById("mycanvas").getContext("2d").lineTo(rmx2[i],rmy2[i]);
+}
+
+//document.getElementById("mycanvas").getContext("2d").lineTo(
+document.getElementById("mycanvas").getContext("2d").closePath();
+}
+
+function RMatrixCalculate()
+{
+for(h=0;h<12;h++)
+{
+qrt=300;
+zval1=(RMatrix(VX1[h],VY1[h],VZ1[h],'z'))+500;
+zval2=(RMatrix(VX2[h],VY2[h],VZ2[h],'z'))+500;
+rmx1[h]=(Math.atan((RMatrix(VX1[h],VY1[h],VZ1[h],'x')/zval1))*500+qrt);
+rmy1[h]=(Math.atan((RMatrix(VX1[h],VY1[h],VZ1[h],'y')/zval1))*500+qrt);
+rmx2[h]=(Math.atan((RMatrix(VX2[h],VY2[h],VZ2[h],'x')/zval2))*500+qrt);
+rmy2[h]=(Math.atan((RMatrix(VX2[h],VY2[h],VZ2[h],'y')/zval2))*500+qrt);
+}
+setTimeout("RMatrixCalculate()",0);
+}
+
+function RMatrix(x,y,z,a)
+{
+if(a=='x'){j=(x*RX[1])+(y*RX[2])+(z*RX[3]);}
+if(a=='y'){j=(x*RY[1])+(y*RY[2])+(z*RY[3]);}
+if(a=='z'){j=(x*RZ[1])+(y*RZ[2])+(z*RZ[3]);}
+return j;
+}
+
+function GetMousePos(event)
+{
+MouseX=event.clientX;
+MouseY=event.clientY;
+Rotation();
+}
+
+function Rotation()
+{
+phi=MouseY/-100;
+theta=MouseX/-100;
+psi=0;
+
+RX[1]=Math.cos(theta)*Math.cos(psi);
+RX[2]=(-1*Math.cos(phi)*Math.sin(psi))+(Math.sin(phi)*Math.sin(theta)*Math.cos(psi));
+RX[3]=(Math.sin(phi)*Math.sin(psi))+(Math.cos(phi)*Math.sin(theta)*Math.cos(psi));
+RY[1]=Math.cos(theta)*Math.sin(psi);
+RY[2]=(Math.cos(phi)*Math.cos(psi))+(Math.sin(phi)*Math.sin(theta)*Math.sin(psi));
+RY[3]=(-1*Math.sin(phi)*Math.cos(psi))+(Math.cos(phi)*Math.sin(theta)*Math.sin(psi));
+RZ[1]=(-1*Math.sin(theta));
+RZ[2]=Math.sin(phi)*Math.cos(theta);
+RZ[3]=Math.cos(phi)*Math.cos(theta);
+
+}
+
+function Translation()
+{
+
+}
+</script>
+</head>
+<body onload="onCreate();">
+<canvas id="mycanvas" width="600" height="600" style="position:absolute; border:thick blue solid;" onmousemove="GetMousePos(event);"></canvas>
+</body>
+</html>

@@ -1,0 +1,51 @@
+function parseOBJ(filename)
+{
+str=readFileHttp(filename);
+//check for errors
+if(str==null){return null;}
+else
+{
+//split file into v and f
+vindex1=str.indexOf("v");
+vindex2=str.lastIndexOf("v");
+findex1=str.indexOf("f");
+findex2=str.lastIndexOf("f");
+}
+
+}
+
+/* READ A FILE  USING XMLHTTPREQUEST 
+
+If the HTML file with your javascript app has been saved to disk, 
+this is an easy way to read in a data file.  Writing out is 
+more complicated and requires either an ActiveX object (IE) 
+or XPCOM (Mozilla).
+
+fname - relative path to the file
+//callback - function to call with file text
+*/
+
+function readFileHttp(fname)
+{
+rT="";
+xmlhttp=getXmlHttp();
+xmlhttp.open("GET",fname,true);
+xmlhttp.send();
+xmlhttp.onreadystatechange=function()
+{
+if(xmlhttp.readyState==4){rT=xmlhttp.responseText;}
+}
+return rT;
+}
+
+/*
+RETURN A CROSS-BROWSER XMLHTTPREQUEST OBJECT
+*/
+
+function getXmlHttp()
+{
+if(window.XMLHttpRequest){xmlhttp=new XMLHttpRequest();}
+else if(window.ActiveXObject){xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");}
+if(xmlhttp==null){alert("Your browser does not support XMLHTTP.");}
+return xmlhttp;
+}
